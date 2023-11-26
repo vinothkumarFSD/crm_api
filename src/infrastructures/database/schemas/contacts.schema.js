@@ -5,7 +5,7 @@ validation rules for the contact object. */
 const contactSchema = new mongoose.Schema({
   firstname: { type: String, required: true },
   lastname: { type: String, required: false },
-  email: { type: String, required: true },
+  email: { type: String, required: true, index: true, unique: true },
   whatsapp: { type: String, required: false },
   mobilephone: { type: String, required: false },
   address: { type: String, required: false },
