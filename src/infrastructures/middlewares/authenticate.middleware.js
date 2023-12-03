@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const CustomError = require('../errors/custom.error');
 
 module.exports.authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -8,12 +9,12 @@ module.exports.authenticateJWT = (req, res, next) => {
     // eslint-disable-next-line no-undef
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
       if (err) {
-        return res.sendStatus(403);
+        throw new CustomError('Unauthorized', 403);
       }
       req.user = user;
       next();
     });
   } else {
-    res.sendStatus(401);
+   throw new CustomError('Unauthorized', 401);
   }
 };

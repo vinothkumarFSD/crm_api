@@ -21,3 +21,4 @@ router.post('/forget-password', authService.forgetPassword);
 router.get('/me', authenticateJWT, authService.me);
 
 module.exports = router;
+  

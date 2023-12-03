@@ -1,5 +1,5 @@
 const logger = require('../infrastructures/utils/logger');
-const { userCollection } = require('../infrastructures/database/schemas/index');
+const { userCollection } = require('../infrastructures/schemas');
 const CustomError = require('../infrastructures/errors/custom.error');
 const { generateAccessToken } = require('../infrastructures/utils/get_token');
 const bcrypt = require('bcrypt');

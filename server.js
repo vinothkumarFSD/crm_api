@@ -15,11 +15,11 @@ const logger = require('./src/infrastructures/utils/logger');
 
 // Controllers
 const authController = require('./src/auth/auth.controller');
-const contactController = require('./src/contacts/contact.controller');
+const contactController = require('./src/contacts/contacts.controller');
 const ErrorHandler = require('./src/infrastructures/middlewares/errorHandler');
 
 // eslint-disable-next-line no-undef
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 app.options('*', (req, res) => res.send(200));
 
