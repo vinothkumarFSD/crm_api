@@ -1,15 +1,20 @@
-const { contactCollection, dealCollection } = require('../infrastructures/schemas');
+const {
+  dealCollection,
+  contactCollection,
+  companiesCollection,
+  productsCollection,
+} = require('../infrastructures/schemas');
 const logger = require('../infrastructures/utils/logger');
 const omit = require('lodash.omit');
 
-class ContactServices {
-  async getContacts(req, res) {
-    logger.log('getContacts');
+class DealServices {
+  async getDeals(req, res) {
+    logger.log('getDeals');
     const query = req?.query;
     const limit = query?.limit ? +query?.limit : 10;
     const skip = query?.skip ? +query?.skip : 0;
     const archived = query?.archived === 'true';
-    const contacts = await contactCollection.aggregate([
+    const deals = await dealCollection.aggregate([
       {
         $match: {
           is_deleted: archived,
@@ -29,56 +34,49 @@ class ContactServices {
     ]);
     return res.status(200).json({
       data: {
-        pagination: contacts[0]?.pagination?.length
+        pagination: deals[0]?.pagination?.length
           ? {
-              ...contacts[0]?.pagination[0],
+              ...deals[0]?.pagination[0],
             }
           : {
               total: 0,
               limit: limit,
               offset: skip,
             },
-        data: contacts[0]?.data ?? [],
+        data: deals[0]?.data ?? [],
       },
     });
   }
 
-  async getContactById(req, res) {
-    logger.log('getContactById');
+  async getDealById(req, res) {
+    logger.log('getDealById');
     const data = req?.params;
-    const contacts = await contactCollection.findById({ _id: data?.id });
+    const deals = await dealCollection.findById({ _id: data?.id });
     return res.status(200).json({
-      data: contacts,
+      data: deals,
     });
   }
 
-  async saveContact(req, res) {
-    logger.log('saveContact');
-    const contactData = req?.body;
+  async saveDeal(req, res) {
+    logger.log('saveDeal');
+    const dealData = req?.body;
     try {
-      const isContactExists = await contactCollection.findOne({
-        email: contactData?.email,
-        is_deleted: false,
-      });
-      const contact = isContactExists || new contactCollection();
-      contact.email = contactData.email;
-      contact.firstname = contactData.firstname;
-      contact.lastname = contactData.lastname;
-      contact.whatsapp = contactData.whatsapp;
-      contact.mobilephone = contactData.mobilephone;
-      contact.address = contactData.address;
-      contact.state = contactData.state;
-      contact.city = contactData.city;
-      contact.country = contactData.country;
-      if (contactData?.dealsId) {
-        contact.deals = await dealCollection.find({ _id: { $in: contactData.dealsId } });
+      const deal = new dealCollection();
+      deal.name = dealData?.name;   
+      deal.price = dealData?.price;
+      deal.quantity = dealData?.quantity ?? 1;
+      if (dealData?.contactsId) {
+        deal.contacts = await contactCollection.find({ _id: { $in: dealData.contactsId } });
       }
-      const contactDocument = await contactCollection.findOneAndUpdate({ email: contactData?.email }, contact, {
-        upsert: true,
-        new: true,
-      });
+      if (dealData?.companiesId) {
+        deal.companies = await companiesCollection.find({ _id: { $in: dealData.companiesId } });
+      }
+      if (dealData?.productsId) {
+        deal.products = await productsCollection.find({ _id: { $in: dealData.productsId } });
+      }
+      deal.save();
       return res.status(200).json({
-        data: contactDocument,
+        data: deal,
       });
     } catch (e) {
       return res.status(400).json({
@@ -87,8 +85,8 @@ class ContactServices {
     }
   }
 
-  async searchContact(req, res) {
-    logger.log('searchContact');
+  async searchDeal(req, res) {
+    logger.log('searchDeal');
     const query = req?.body;
     const limit = query?.limit ?? 10;
     const skip = query?.skip ?? 0;
@@ -125,9 +123,9 @@ class ContactServices {
           data: [{ $skip: skip }, { $limit: limit }],
         },
       });
-      const contacts = await contactCollection.aggregate(mongoQuery);
+      const deals = await dealCollection.aggregate(mongoQuery);
       return res.status(200).json({
-        data: contacts,
+        data: deals,
       });
     } catch (e) {
       return res.status(200).json({
@@ -136,11 +134,11 @@ class ContactServices {
     }
   }
 
-  async deleteContacts(req, res) {
+  async deleteDeals(req, res) {
     const data = req?.body;
-    logger.log('deleteContactById');
-    await contactCollection.updateMany(
-      { _id: { $in: data?.contacts?.map((contact) => contact.id) } },
+    logger.log('deleteDealById');
+    await dealCollection.updateMany(
+      { _id: { $in: data?.deals?.map((deal) => deal.id) } },
       {
         $set: {
           is_deleted: true,
@@ -150,20 +148,20 @@ class ContactServices {
     return res.status(204).json();
   }
 
-  async updateContacts(req, res) {
-    const contactUpdateData = req?.body;
-    logger.log('updateContacts');
-    const updatedContacts = [];
-    for (const element of contactUpdateData.contacts) {
-      const contact = element;
-      updatedContacts.push(
-        await contactCollection.findOneAndUpdate(
+  async updateDeals(req, res) {
+    const dealUpdateData = req?.body;
+    logger.log('updateDeals');
+    const updatedDeals = [];
+    for (const element of dealUpdateData.deals) {
+      const deal = element;
+      updatedDeals.push(
+        await dealCollection.findOneAndUpdate(
           {
-            _id: contact.id,
+            _id: deal.id,
           },
           {
             $set: {
-              ...omit(contact, ['id']),
+              ...omit(deal, ['id']),
             },
           },
           {
@@ -173,9 +171,9 @@ class ContactServices {
       );
     }
     return res.status(200).json({
-      data: updatedContacts,
+      data: updatedDeals,
     });
   }
 }
 
-module.exports = ContactServices;
+module.exports = DealServices;
