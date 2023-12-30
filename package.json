@@ -15,6 +15,9 @@
     "management",
     "customer"
   ],
+  "engines": {
+    "node": "18.x"
+  },
   "author": "Vinoth Kumar",
   "license": "ISC",
   "dependencies": {

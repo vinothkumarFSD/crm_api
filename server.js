@@ -31,7 +31,11 @@ const PORT = 3000;
 app.options('*', (req, res) => res.send(200));
 
 app.use(bodyParser.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ['https://crm-api-mu.vercel.app'],
+  }),
+);
 app.use(morganMiddleware);
 
 app.use(`${api}/auth`, authController);

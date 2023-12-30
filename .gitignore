@@ -4,3 +4,4 @@
 # node_module
 node_modules
 package-lock.json
+.vercel
