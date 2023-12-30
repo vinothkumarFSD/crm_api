@@ -13,8 +13,10 @@ const contactSchema = new mongoose.Schema(
     state: { type: String, required: false },
     city: { type: String, required: false },
     country: { type: String, required: false },
+    postalCode: { type: Number, required: false },
     is_deleted: { type: Boolean, required: true, default: false },
-    deal: { type: mongoose.Schema.ObjectId, ref: 'deals', required: false }
+    deleted_at: { type: String, default: null },
+    deals: { type: mongoose.Schema.ObjectId, ref: 'deals', required: false },
   },
   { timestamps: true },
 );
