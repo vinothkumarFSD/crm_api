@@ -38,6 +38,10 @@ app.use(
 );
 app.use(morganMiddleware);
 
+app.get('/', (req, res) => {
+  res.json('Success');
+});
+
 app.use(`${api}/auth`, authController);
 app.use(`${api}/${crm}/contacts`, contactController);
 app.use(`${api}/${crm}/deals`, dealController);
