@@ -34,7 +34,7 @@ app.use(bodyParser.json());
 app.use(headers);
 app.use(
   cors({
-    origin: 'http://localhost:4000', // Change this to the origin of your frontend application
+    origins: ['http://localhost:4000'], // Change this to the origin of your frontend application
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     optionsSuccessStatus: 204,
   }),
