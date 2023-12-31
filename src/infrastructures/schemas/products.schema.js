@@ -8,6 +8,7 @@ const ProductSchema = new mongoose.Schema(
     price: { type: String, required: true },
     is_deleted: { type: Boolean, default: false },
     deleted_at: { type: String, default: null },
+    created_date: { type: String }
   },
   { timestamps: true },
 );

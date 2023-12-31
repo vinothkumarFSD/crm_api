@@ -13,6 +13,7 @@ const dealSchema = new mongoose.Schema(
     is_deleted: { type: Boolean, default: false },
     deleted_at: { type: String, default: null },
     order_date: { type: String, required: false },
+    created_date: { type: String }
   },
   { timestamps: true },
 );

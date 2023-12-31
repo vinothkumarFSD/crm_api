@@ -80,6 +80,8 @@ class DealServices {
       deal.name = dealData?.name;
       deal.price = dealData?.price;
       deal.quantity = dealData?.quantity ?? 1;
+      deal.created_date = new Date().toLocaleDateString();
+      
       if (dealData?.contactsId) {
         deal.contacts = await contactCollection.find({ _id: dealData?.contactsId });
       }

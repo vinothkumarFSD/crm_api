@@ -74,7 +74,9 @@ module.exports = class ProductServices {
       const product = new productsCollection();
       product.name = productData?.name;
       product.price = productData?.price;
+      product.created_date = new Date().toLocaleDateString();
       product.save();
+
       return res.status(200).json({
         data: product,
       });
