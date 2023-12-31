@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
     mobile: { type: String, required: false },
     last_login_date: { type: String, required: false },
     password: { type: String, required: false },
+    created_date: { type: String }
   },
   { timestamps: true },
 );

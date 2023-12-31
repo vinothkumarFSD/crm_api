@@ -14,6 +14,7 @@ const companySchema = new mongoose.Schema(
     country: { type: String, required: false },
     is_deleted: { type: Boolean, required: true, default: false },
     deleted_at: { type: String, default: null },
+    created_date: { type: String }
   },
   { timestamps: true },
 );

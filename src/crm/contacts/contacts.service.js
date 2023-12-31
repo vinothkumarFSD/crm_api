@@ -96,6 +96,7 @@ module.exports = class ContactServices {
       contact.city = contactData.city;
       contact.postalCode = contactData.postalCode;
       contact.country = contactData.country;
+      contact.created_date = new Date().toLocaleDateString();
 
       if (contactData?.dealsId) {
         contact.deals = await dealCollection.find({ _id: { $in: contactData.dealsId } });

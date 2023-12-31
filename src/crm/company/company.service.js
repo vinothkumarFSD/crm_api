@@ -93,6 +93,7 @@ module.exports = class CompaniesService {
       company.state = companyData.state;
       company.city = companyData.city;
       company.country = companyData.country;
+      company.created_date = new Date().toLocaleDateString();
 
       const companyDocument = await companiesCollection.findOneAndUpdate({ email: companyData?.email }, company, {
         upsert: true,
