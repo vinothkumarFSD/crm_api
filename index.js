@@ -29,8 +29,6 @@ const ErrorHandler = require('./src/infrastructures/middlewares/errorHandler');
 // eslint-disable-next-line no-undef
 const PORT = 3000;
 
-app.options('*', (req, res) => res.send(200));
-
 app.use(bodyParser.json());
 app.use(
   cors({
