@@ -23,19 +23,23 @@ const contactController = require('./src/crm/contacts/contacts.controller');
 const dealController = require('./src/crm/deals/deals.controller');
 const productController = require('./src/crm/products/products.controller');
 const companyController = require('./src/crm/company/company.controller');
+const dashboardController = require('./src/crm/dashboard/dashboard.controller');
 const ErrorHandler = require('./src/infrastructures/middlewares/errorHandler');
+const headers = require('./src/infrastructures/middlewares/headers');
 
 // eslint-disable-next-line no-undef
 const PORT = 3000;
 
-app.options('*', (req, res) => res.send(200));
-
-app.use(bodyParser.json());
 app.use(
   cors({
-    origin: ['https://crm-api-mu.vercel.app'],
+    origins: ['http://localhost:4000'], // Change this to the origin of your frontend application
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    optionsSuccessStatus: 204,
   }),
 );
+
+app.use(bodyParser.json());
+app.use(headers);
 app.use(morganMiddleware);
 
 app.get('/', (req, res) => {
@@ -47,6 +51,7 @@ app.use(`${api}/${crm}/contacts`, contactController);
 app.use(`${api}/${crm}/deals`, dealController);
 app.use(`${api}/${crm}/products`, productController);
 app.use(`${api}/${crm}/companies`, companyController);
+app.use(`${api}/${crm}/dashboard`, dashboardController);
 
 app.use(ErrorHandler);
 

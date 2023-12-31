@@ -17,6 +17,7 @@ const contactSchema = new mongoose.Schema(
     is_deleted: { type: Boolean, required: true, default: false },
     deleted_at: { type: String, default: null },
     deals: { type: mongoose.Schema.ObjectId, ref: 'deals', required: false },
+    created_date: { type: String }
   },
   { timestamps: true },
 );
