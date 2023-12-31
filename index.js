@@ -31,11 +31,12 @@ const headers = require('./src/infrastructures/middlewares/headers');
 const PORT = 3000;
 
 app.use(bodyParser.json());
-app.use(headers)
+app.use(headers);
 app.use(
   cors({
-    origin: '*',
-    optionsSuccessStatus: 200
+    origin: 'http://localhost:4000', // Change this to the origin of your frontend application
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    optionsSuccessStatus: 204,
   }),
 );
 app.use(morganMiddleware);
