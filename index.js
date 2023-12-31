@@ -30,8 +30,6 @@ const headers = require('./src/infrastructures/middlewares/headers');
 // eslint-disable-next-line no-undef
 const PORT = 3000;
 
-app.use(bodyParser.json());
-app.use(headers);
 app.use(
   cors({
     origins: ['http://localhost:4000'], // Change this to the origin of your frontend application
@@ -39,6 +37,9 @@ app.use(
     optionsSuccessStatus: 204,
   }),
 );
+
+app.use(bodyParser.json());
+app.use(headers);
 app.use(morganMiddleware);
 
 app.get('/', (req, res) => {
