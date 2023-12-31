@@ -34,7 +34,7 @@ app.options('*', (req, res) => res.send(200));
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: ['https://crm-api-mu.vercel.app'],
+    origin: ['https://crm-api-mu.vercel.app', 'http://localhost:4000'],
   }),
 );
 app.use(morganMiddleware);
