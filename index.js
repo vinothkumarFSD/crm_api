@@ -25,11 +25,13 @@ const productController = require('./src/crm/products/products.controller');
 const companyController = require('./src/crm/company/company.controller');
 const dashboardController = require('./src/crm/dashboard/dashboard.controller');
 const ErrorHandler = require('./src/infrastructures/middlewares/errorHandler');
+const headers = require('./src/infrastructures/middlewares/headers');
 
 // eslint-disable-next-line no-undef
 const PORT = 3000;
 
 app.use(bodyParser.json());
+app.use(headers)
 app.use(
   cors({
     origin: '*',
